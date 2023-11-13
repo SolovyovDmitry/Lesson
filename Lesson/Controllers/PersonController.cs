@@ -3,19 +3,14 @@
 namespace Lesson.Controllers;
 
 [Route("[controller]")]
+[ApiController]
 public class PersonController : ControllerBase
 {
   [HttpPost]
-  public Guid Create(
+  public CreatePersonResponse Create(
     [FromServices] IPersonActions action,
     [FromBody] PersonInfo request)
   {
     return action.Create(request);
-  }
-
-  [HttpGet]
-  public PersonInfo Get([FromQuery] Guid id)
-  {
-    return action.Get(id);
   }
 }

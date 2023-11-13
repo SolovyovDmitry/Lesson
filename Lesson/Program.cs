@@ -10,8 +10,7 @@ namespace Lesson
 
       builder.Services.AddControllers();
       builder.Services.AddTransient<IPersonActions, PersonActions>();
-      builder.Services.AddScoped<IPersonActions, PersonActions>();
-      builder.Services.AddSingleton<IPersonActions, PersonActions>();
+      builder.Services.AddTransient<ICreatePersonRequestValidator, CreatePersonRequestValidator>();
 
       var app = builder.Build();
 

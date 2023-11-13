@@ -2,7 +2,7 @@
 {
   public interface IPersonActions
   {
-    Guid Create(PersonInfo request);
+    CreatePersonResponse Create(PersonInfo request);
 
     PersonInfo Get(Guid id);
   }

@@ -1,22 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using FluentValidation.Results;
 
 namespace Lesson;
 
 public class PersonActions : IPersonActions
 {
   static Dictionary<Guid, PersonInfo> persons = new();
-  private readonly IActionResultTypeMapper _mapper;
+  CreatePersonResponse response = new();
 
-  public PersonActions(IActionResultTypeMapper mapper)
+  private readonly ICreatePersonRequestValidator _validator;
+
+  public PersonActions(ICreatePersonRequestValidator validator)
   {
-    _mapper = mapper;
+    _validator = validator;
   }
 
-  public Guid Create(PersonInfo request)
+  public CreatePersonResponse Create(PersonInfo request)
   {
-    var id = Guid.NewGuid();
-    persons.Add(id, request);
-    return id;
+    ValidationResult result = _validator.Validate(request);
+
+    if (!result.IsValid)
+    {
+      response.Errors = result.Errors.Select(e => e.ErrorMessage).ToList();
+    }
+    else
+    {
+      var id = Guid.NewGuid();
+      persons.Add(id, request);
+
+      response.Id = id;
+    }
+
+    return response;
   }
 
   public PersonInfo Get(Guid id)
